@@ -1,4 +1,5 @@
 import {
+  Aside,
   Balance,
   CartAction,
   ChartContainer,
@@ -7,7 +8,9 @@ import {
   Header,
   InputGroup,
   Main,
+  SearchTransaction,
   Section,
+  TransactionGroup,
 } from './style';
 import { Logo } from './../../components/logo/index';
 import { Button } from '../../components/button';
@@ -16,6 +19,8 @@ import { Input } from '../../components/input';
 import { InputMask } from '@react-input/mask';
 import { ButtonIcon } from '../../components/button-icon';
 import { Card } from '../../components/card';
+import { Transaction } from '../../components/transaction';
+import { CreateCategoryDialog } from '../../components/create-category-dialog';
 
 export function Home() {
   return (
@@ -23,8 +28,8 @@ export function Home() {
       <Header>
         <Logo />
         <div>
-          <Button>Nova transação</Button>
-          <Button>Nova categoria</Button>
+          <Button>Nova Transação</Button>
+          <CreateCategoryDialog />
         </div>
       </Header>
       <Main>
@@ -87,6 +92,38 @@ export function Home() {
             <ChartContent></ChartContent>
           </ChartContainer>
         </Section>
+        <Aside>
+          <header>
+            <Title title="Transações" subtitle="Receitas e Gastos no período" />
+            <SearchTransaction>
+              <Input variant="black" placeholder="Procurar transação..." />
+              <ButtonIcon />
+            </SearchTransaction>
+          </header>
+          <TransactionGroup>
+            <Transaction
+              id={1}
+              amount={20000}
+              date="09/10/2024"
+              category={{ title: 'Alimentação', color: '#ff33bb' }}
+              title="Mercado"
+            />
+            <Transaction
+              id={1}
+              amount={20000}
+              date="09/10/2024"
+              category={{ title: 'Alimentação', color: '#ff33bb' }}
+              title="Mercado"
+            />
+            <Transaction
+              id={1}
+              amount={20000}
+              date="09/10/2024"
+              category={{ title: 'Alimentação', color: '#ff33bb' }}
+              title="Mercado"
+            />
+          </TransactionGroup>
+        </Aside>
       </Main>
     </>
   );
