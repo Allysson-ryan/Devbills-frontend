@@ -13,7 +13,6 @@ import {
   TransactionGroup,
 } from './style';
 import { Logo } from './../../components/logo/index';
-import { Button } from '../../components/button';
 import { Title } from '../../components/title';
 import { Input } from '../../components/input';
 import { InputMask } from '@react-input/mask';
@@ -21,6 +20,8 @@ import { ButtonIcon } from '../../components/button-icon';
 import { Card } from '../../components/card';
 import { Transaction } from '../../components/transaction';
 import { CreateCategoryDialog } from '../../components/create-category-dialog';
+import { CreateTransactionDialog } from '../../components/create-transaction-dialog';
+import { CategoriesPieChart } from '../../components/categories-pie-chart';
 
 export function Home() {
   return (
@@ -28,7 +29,7 @@ export function Home() {
       <Header>
         <Logo />
         <div>
-          <Button>Nova Transação</Button>
+          <CreateTransactionDialog />
           <CreateCategoryDialog />
         </div>
       </Header>
@@ -68,7 +69,9 @@ export function Home() {
                 subtitle="Despesas por categoria no período"
               />
             </header>
-            <ChartContent></ChartContent>
+            <ChartContent>
+              <CategoriesPieChart />
+            </ChartContent>
           </ChartContainer>
           <ChartContainer>
             <header>
