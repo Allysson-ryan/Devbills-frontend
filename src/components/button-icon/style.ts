@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { theme } from '../../style/theme';
 
-export const Container = styled.button`
+export const ButtonStyles = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,7 +19,7 @@ export const Container = styled.button`
 
   svg {
     fill: ${theme.colors.black};
-    height: 1.25rem;
     width: 3rem;
+    height: 1.25rem;
   }
 `;

@@ -1,15 +1,17 @@
-import { Container } from './styles';
+import { forwardRef, type LegacyRef } from 'react';
+import { TitleStyles } from './styles';
 
 type TitleProps = {
   title: string;
-  subtitle: string;
+  subTitle: string;
 };
-
-export function Title({ title, subtitle }: TitleProps) {
-  return (
-    <Container>
-      <h2>{title}</h2>
-      <span>{subtitle}</span>
-    </Container>
-  );
-}
+export const Title = forwardRef<HTMLTitleElement, TitleProps>(
+  ({ title, subTitle }, ref) => {
+    return (
+      <TitleStyles ref={ref as LegacyRef<HTMLDivElement>}>
+        <h2>{title}</h2>
+        <span>{subTitle}</span>
+      </TitleStyles>
+    );
+  },
+);

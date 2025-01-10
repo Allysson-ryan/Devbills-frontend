@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { theme } from '../../style/theme';
 
-type ContentType = {
+type ContentProps = {
   $variant: 'income' | 'expense';
   $tagColor: string;
 };
@@ -11,7 +11,7 @@ const variantColorMap = {
   expense: theme.colors.error,
 };
 
-export const Container = styled.div`
+export const TransactionStyles = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -28,17 +28,17 @@ export const Container = styled.div`
   &::after {
     content: '';
     position: absolute;
+    right: 50%;
     bottom: 0;
-    left: 50%;
-    height: 1px;
     width: 5%;
+    height: 1px;
     background-color: ${theme.colors.neutral};
   }
 `;
 
 export const Info = styled.div`
   display: flex;
-  align-items: self-start;
+  align-items: flex-start;
   gap: 0.5rem;
 
   div {
@@ -61,7 +61,7 @@ export const Info = styled.div`
   }
 `;
 
-export const Content = styled.div<ContentType>`
+export const Content = styled.div<ContentProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -74,7 +74,7 @@ export const Content = styled.div<ContentType>`
   }
 
   span {
-    font-size: 0.65rem;
+    font-size: 0.625rem;
     font-weight: 400;
     border: 1px solid ${(props) => props.$tagColor};
     color: ${(props) => props.$tagColor};

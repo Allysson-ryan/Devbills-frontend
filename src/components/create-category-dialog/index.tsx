@@ -1,20 +1,44 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
-import { Dialog } from '../dialog';
+import { useForm } from 'react-hook-form';
+import { useFetchAPI } from '../../hooks/useFetchAPI';
+import { theme } from '../../style/theme';
+import { createCategorySchema } from '../../Validator/schemas';
+import { createCategoryData } from '../../Validator/types';
 import { Button } from '../button';
-import { Title } from '../title';
+import { Dialog } from '../dialog';
 import { Input } from '../input';
 import { Container } from './style';
+import { Title } from '../title';
 
 export function CreateCategoryDialog() {
+  const { createCategory, fetchCategories } = useFetchAPI();
   const [open, setOpen] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      title: '',
+      color: theme.colors.primary,
+    },
+    resolver: zodResolver(createCategorySchema),
+  });
 
   const handleClose = useCallback(() => {
     setOpen(false);
   }, []);
 
-  const onSubmit = useCallback(() => {
-    handleClose();
-  }, [handleClose]);
+  const onSubmit = useCallback(
+    async (data: createCategoryData) => {
+      await createCategory(data);
+      handleClose();
+      await fetchCategories();
+      alert('Categoria cadastrada');
+    },
+    [handleClose, createCategory, fetchCategories],
+  );
 
   return (
     <Dialog
@@ -25,20 +49,29 @@ export function CreateCategoryDialog() {
       <Container>
         <Title
           title="Nova Categoria"
-          subtitle="Crie uma nova categoria para suas transações"
+          subTitle="Crie uma nova categoria para sua transações"
         />
-        <form>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <Input label="Nome" placeholder="Nome da categoria..." />
-            <Input label="Cor" type="color" />
+            <Input
+              label="Nome"
+              placeholder="Nome da Categoria..."
+              {...register('title', { required: 'Nome é obrigatório' })}
+              error={errors.title?.message}
+            />
+            <Input
+              label="Cor"
+              type="color"
+              {...register('color')}
+              error={errors.title?.message}
+            />
           </div>
           <footer>
             <Button onClick={handleClose} variant="outline" type="button">
               Cancelar
             </Button>
-            <Button onClick={onSubmit} type="button">
-              Cadastrar
-            </Button>
+            <Button type="submit">Cadastrar</Button>
           </footer>
         </form>
       </Container>

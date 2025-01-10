@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { theme } from '../../style/theme';
 
-type ContainerProps = {
+type CardProps = {
   $variant: 'balance' | 'incomes' | 'expenses';
 };
 
@@ -11,7 +11,7 @@ const variantColorMap = {
   expenses: theme.colors.error,
 };
 
-export const Container = styled.div<ContainerProps>`
+export const CardStyles = styled.div<CardProps>`
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -23,18 +23,18 @@ export const Container = styled.div<ContainerProps>`
   svg {
     width: 1.75rem;
     height: 1.75rem;
-    color: ${(props) => variantColorMap[props.$variant]};
+    fill: ${(props) => variantColorMap[props.$variant]};
   }
 
   span {
     font-size: 1rem;
-    font-weight: 300;
+    font-size: 300;
     color: ${theme.colors.neutral};
   }
 
   strong {
     font-size: 1.5rem;
-    font-weight: 500;
+    font-size: 300;
     color: ${(props) => variantColorMap[props.$variant]};
   }
 `;

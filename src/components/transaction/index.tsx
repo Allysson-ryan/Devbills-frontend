@@ -1,7 +1,7 @@
 import { formatCurrency } from '../../Utils/format-currency';
-import { Container, Info, Content } from './style';
+import { Content, Info, TransactionStyles } from './style';
 
-type TransactionProps = {
+export type TransactionProps = {
   id: number;
   title: string;
   date: string;
@@ -12,7 +12,6 @@ type TransactionProps = {
   };
   variant?: 'income' | 'expense';
 };
-
 export function Transaction({
   id,
   title,
@@ -22,19 +21,18 @@ export function Transaction({
   variant = 'income',
 }: TransactionProps) {
   return (
-    <Container>
+    <TransactionStyles>
       <Info>
-        <span>#{id.toString().padStart(4, '0')}</span>
+        <span>{id.toString().padStart(4, '0')}</span>
         <div>
           <strong>{title}</strong>
           <span>{date}</span>
         </div>
       </Info>
-
       <Content $variant={variant} $tagColor={category.color}>
         <strong>{formatCurrency(amount)}</strong>
-        <span>{category.title.toUpperCase()}</span>
+        <span>{category.title.toLocaleUpperCase()}</span>
       </Content>
-    </Container>
+    </TransactionStyles>
   );
 }

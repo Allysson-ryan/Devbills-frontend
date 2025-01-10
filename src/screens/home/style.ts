@@ -1,6 +1,9 @@
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import { theme } from '../../style/theme';
-import { Transaction } from './../../components/transaction/index';
+
+type CategoryBadgeProps = {
+  $color: string;
+};
 
 export const Header = styled.header`
   display: flex;
@@ -20,6 +23,7 @@ export const Main = styled.main`
   display: flex;
   gap: 0.75rem;
   width: 100%;
+  padding: 0 1.5rem 1.5rem 1.5rem;
 `;
 
 export const Section = styled.section`
@@ -27,7 +31,6 @@ export const Section = styled.section`
   flex-direction: column;
   gap: 0.75rem;
   width: 100%;
-  padding: 0 1.5rem 1.5rem 1.5rem;
 `;
 
 export const Filters = styled.div`
@@ -40,8 +43,7 @@ export const Filters = styled.div`
 export const InputGroup = styled.div`
   display: flex;
   align-items: flex-end;
-  max-width: 22.5rem;
-  width: 100%;
+  min-width: 22.5rem;
   gap: 0.5rem;
 `;
 
@@ -57,7 +59,7 @@ export const ChartContainer = styled.div`
   flex-direction: column;
   padding: 1rem;
   background-color: ${theme.colors.dark};
-  border-radius: 0.25rem;
+  border-radius: 0%.25rem;
   gap: 0.75rem;
 
   header {
@@ -71,7 +73,7 @@ export const ChartContent = styled.div`
   height: 14.5rem;
 `;
 
-export const CartAction = styled.div`
+export const ChartAction = styled.div`
   display: flex;
   align-items: flex-end;
   width: 8rem;
@@ -100,8 +102,29 @@ export const SearchTransaction = styled.div`
   gap: 0.5rem;
 `;
 
-export const TransactionGroup = styled.div`
+export const TransactionList = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 0.75rem;
+`;
+
+export const CategoryBadge = styled.span<CategoryBadgeProps>`
+  display: flex;
+  font-size: row;
+  align-items: center;
+  gap: 0.25rem;
+
+  font-size: 0, 625rem;
+  font-weight: 400;
+  border: 1px solid ${(props) => props.$color};
+  color: ${(props) => props.$color};
+  padding: 0.25rem;
+  border-radius: 0.125rem;
+  cursor: pointer;
+
+  svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: ${theme.colors.error};
+  }
 `;

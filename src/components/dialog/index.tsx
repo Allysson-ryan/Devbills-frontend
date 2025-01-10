@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { Content, Overlay, Portal, Root, Trigger } from './style';
+import type { ReactNode } from 'react';
+import { Content, DialogTitle, Overlay, Portal, Root, Trigger } from './style';
 
 type DialogProps = {
   children: ReactNode;
@@ -7,14 +7,15 @@ type DialogProps = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
-
 export function Dialog({ children, trigger, open, onOpenChange }: DialogProps) {
   return (
     <Root open={open} onOpenChange={onOpenChange}>
-      <Trigger>{trigger}</Trigger>
+      <Trigger asChild>{trigger}</Trigger>
       <Portal>
         <Overlay />
-        <Content>{children}</Content>
+        <Content>
+          <DialogTitle>{children}</DialogTitle>
+        </Content>
       </Portal>
     </Root>
   );

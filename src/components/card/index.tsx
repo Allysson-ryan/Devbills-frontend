@@ -3,8 +3,8 @@ import {
   ArrowCircleUpRight,
   CurrencyCircleDollar,
 } from '@phosphor-icons/react';
-import { Container } from './style';
 import { formatCurrency } from '../../Utils/format-currency';
+import { CardStyles } from './style';
 
 type CardProps = {
   variant?: 'balance' | 'incomes' | 'expenses';
@@ -20,10 +20,10 @@ const iconsMap = {
 
 export function Card({ variant = 'balance', title, amount }: CardProps) {
   return (
-    <Container $variant={variant}>
+    <CardStyles $variant={variant}>
       {iconsMap[variant]}
       <span>{title}</span>
       <strong>{formatCurrency(amount)}</strong>
-    </Container>
+    </CardStyles>
   );
 }

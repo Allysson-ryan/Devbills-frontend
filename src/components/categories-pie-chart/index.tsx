@@ -2,28 +2,13 @@ import { ResponsivePie } from '@nivo/pie';
 import { useMemo } from 'react';
 import { theme } from '../../style/theme';
 import { formatCurrency } from '../../Utils/format-currency';
+import type { Expense } from '../../service/api.type';
 
-const apiData = [
-  {
-    _id: '1',
-    title: 'Alimentação',
-    amount: 30000,
-    color: '#ff33bb',
-  },
-
-  {
-    _id: '2',
-    title: 'compras',
-    amount: 20000,
-    color: '#d52b2b',
-  },
-  {
-    _id: '3',
-    title: 'Gastos fixos',
-    amount: 50000,
-    color: '#bc850d',
-  },
-];
+export type CategoryProps = {
+  id: string;
+  title: string;
+  color: string;
+};
 
 type ChartData = {
   id: string;
@@ -33,21 +18,40 @@ type ChartData = {
   color: string;
 };
 
-export function CategoriesPieChart() {
-  const data = useMemo<ChartData[]>(() => {
-    const chartData: ChartData[] = apiData.map((item) => ({
-      id: item.title,
-      label: item.title,
-      externalId: item._id,
-      value: item.amount,
-      color: item.color,
-    }));
+type CategoriesPieChartProps = {
+  onClick: (category: CategoryProps) => void;
+  expenses?: Expense[];
+};
 
-    return chartData;
-  }, []);
+export function CategoriesPieChart({
+  onClick,
+  expenses,
+}: CategoriesPieChartProps) {
+  const data = useMemo<ChartData[]>(() => {
+    if (expenses?.length) {
+      const chartData: ChartData[] = expenses.map((item) => ({
+        id: item.title,
+        label: item.title,
+        externalId: item._id,
+        value: item.amount,
+        color: item.color,
+      }));
+
+      return chartData;
+    }
+
+    return [];
+  }, [expenses]);
 
   return (
     <ResponsivePie
+      onClick={({ data }) =>
+        onClick({
+          id: data.externalId,
+          title: data.id,
+          color: data.color,
+        })
+      }
       data={data}
       enableArcLabels={false}
       enableArcLinkLabels={false}
@@ -56,8 +60,8 @@ export function CategoriesPieChart() {
       valueFormat={formatCurrency}
       theme={{
         text: {
-          fontFamily: 'Lexend',
           fontSize: 10,
+          fontFamily: 'Lexend',
         },
         tooltip: {
           container: {

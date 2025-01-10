@@ -1,28 +1,83 @@
-import { useCallback, useState } from 'react';
-import { Dialog } from '../dialog';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { InputMask } from '@react-input/mask';
+import dayjs from 'dayjs';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useFetchAPI } from '../../hooks/useFetchAPI';
+import { createTransactionSchema } from '../../Validator/schemas';
+import type { CreateTransactionData } from '../../Validator/types';
 import { Button } from '../button';
-import { Title } from '../title';
+import { Dialog } from '../dialog';
 import { Input } from '../input';
 import {
   Container,
-  Content,
   CurrencyInput,
+  ErrorMessage,
   InputGroup,
   RadioForm,
   RadioGroup,
 } from './style';
-import { InputMask } from '@react-input/mask';
+import { Title } from '../title';
 
 export function CreateTransactionDialog() {
+  const { categories, fetchCategories, createTransaction } = useFetchAPI();
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<string>('');
+  const {
+    register,
+    reset,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<CreateTransactionData>({
+    defaultValues: {
+      categoryId: 'null',
+      title: '',
+      amount: '',
+      date: dayjs().format('DD/MM/YYYY'),
+      type: 'expense',
+    },
+    resolver: zodResolver(createTransactionSchema),
+  });
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const numericValue = e.target.value.replace(/[^0-9.]/g, '');
+    const cents = Number.parseInt(numericValue, 10);
+
+    if (!Number.isNaN(cents)) {
+      const reais = cents / 100;
+      const formattedValue = formattedCurrency(reais);
+      setValue(formattedValue);
+    } else {
+      setValue('');
+    }
+  };
+
+  const formattedCurrency = (value: number): string => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
+  };
 
   const handleClose = useCallback(() => {
+    reset();
     setOpen(false);
-  }, []);
+  }, [reset]);
 
-  const onSubmit = useCallback(() => {
-    handleClose();
-  }, [handleClose]);
+  const onSubmit = useCallback(
+    async (data: CreateTransactionData) => {
+      await createTransaction(data);
+      handleClose();
+      alert('Transação cadastrada');
+    },
+    [handleClose, createTransaction],
+  );
 
   return (
     <Dialog
@@ -36,54 +91,80 @@ export function CreateTransactionDialog() {
           subtitle="Crie uma nova transação para seu controle financeiro"
         />
 
-        <form>
-          <Content>
-            <InputGroup>
-              <label>Categoria</label>
-              <select>
-                <option value="null">Selecione uma categoria...</option>
-              </select>
-            </InputGroup>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <InputGroup>
+            <label>Categoria</label>
+            <select {...register('categoryId')}>
+              <option value="null">Selecione uma categoria...</option>
+              {categories?.length &&
+                categories.map((item) => (
+                  <option key={item._id} value={item._id}>
+                    {item.title}
+                  </option>
+                ))}
+            </select>
+            {errors.categoryId && (
+              <ErrorMessage>{errors.categoryId.message}</ErrorMessage>
+            )}
+          </InputGroup>
+          <Input
+            label="Nome"
+            placeholder="Nome da transação..."
+            {...register('title')}
+            error={errors.title?.message}
+          />
 
-            <Input label="Nome" placeholder="Nome da transação..." />
-
-            <InputGroup>
-              <label>Valor</label>
-              <CurrencyInput
-                placeholder="R$ 0,00"
-                format="currency"
-                currency="BRL"
-              />
-            </InputGroup>
-
-            <InputMask
-              component={Input}
-              mask="dd/mm/aaaa"
-              replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
-              label="Data"
-              variant="black"
-              placeholder="dd/mm/aaaa"
+          <InputGroup>
+            <label>Valor</label>
+            <CurrencyInput
+              placeholder="R$ 0,00"
+              value={value}
+              {...register('amount')}
+              onChange={(e) => handleChange(e)}
             />
+            {errors.amount && (
+              <ErrorMessage>{errors.amount.message}</ErrorMessage>
+            )}
+          </InputGroup>
 
-            <RadioForm>
-              <RadioGroup>
-                <input type="radio" id="income" value="income" name="type" />
-                <label htmlFor="income">Receita</label>
-              </RadioGroup>
-              <RadioGroup>
-                <input type="radio" id="expense" value="expense" name="type" />
-                <label htmlFor="expense">Gasto</label>
-              </RadioGroup>
-            </RadioForm>
-          </Content>
+          <InputMask
+            component={Input}
+            mask="dd/mm/aaaa"
+            replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+            label="Data"
+            variant="black"
+            placeholder="dd/mm/aaaa"
+            error={errors.date?.message}
+            {...register('date')}
+            required
+          />
 
+          <RadioForm>
+            <RadioGroup>
+              <input
+                type="radio"
+                id="income"
+                value="income"
+                {...register('type')}
+              />
+              <label htmlFor="income">Receita</label>
+            </RadioGroup>
+            <RadioGroup>
+              <input
+                type="radio"
+                id="expense"
+                value="expense"
+                {...register('type')}
+              />
+              <label htmlFor="expense">Gasto</label>
+            </RadioGroup>
+            {errors.type && <ErrorMessage>{errors.type.message}</ErrorMessage>}
+          </RadioForm>
           <footer>
             <Button onClick={handleClose} variant="outline" type="button">
               Cancelar
             </Button>
-            <Button onClick={onSubmit} type="button">
-              Cadastrar
-            </Button>
+            <Button type="submit">Cadastrar</Button>
           </footer>
         </form>
       </Container>

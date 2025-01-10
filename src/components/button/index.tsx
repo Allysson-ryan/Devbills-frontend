@@ -1,17 +1,14 @@
-import { ComponentProps, forwardRef } from 'react';
-import { Container } from './style';
+import { type ComponentProps, forwardRef } from 'react';
+import { ButtonStyles } from './style';
 
-type ButtonProps = ComponentProps<'button'> & {
+export type ButtonProps = ComponentProps<'button'> & {
   variant?: 'default' | 'outline';
 };
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function (
-  { children, variant = 'default', ...props },
-  ref,
-) {
-  return (
-    <Container {...props} ref={ref} $variant={variant}>
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, variant = 'default', ...props }, ref) => (
+    <ButtonStyles ref={ref} {...props} $variant={variant}>
       {children}
-    </Container>
-  );
-});
+    </ButtonStyles>
+  ),
+);

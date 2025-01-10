@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { theme } from '../../style/theme';
 
-type ContainerProps = {
+type InputProps = {
   $variant: 'black' | 'dark';
 };
 
-export const Container = styled.div<ContainerProps>`
+export const InputStyles = styled.div<InputProps>`
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
