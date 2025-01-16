@@ -2,8 +2,6 @@
 
 DevBills é uma aplicação completa para gerenciamento de finanças pessoais e profissionais, combinando uma interface intuitiva desenvolvida com **React** e **TypeScript** com uma poderosa API backend personalizada que criei. 
 
-**Este site ainda está em desenvolvimento e novas funcionalidades estão sendo implementadas continuamente.**
-
 ## 📌 Funcionalidades Planejadas
 - **Gerenciamento de transações:** Adicione, edite e exclua receitas ou despesas.
 - **Relatórios financeiros:** Visualize gráficos e dashboards para entender sua saúde financeira.
