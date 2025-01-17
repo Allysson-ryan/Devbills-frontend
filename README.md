@@ -22,4 +22,4 @@ DevBills é uma aplicação completa para gerenciamento de finanças pessoais e 
 
 # Screenshot
 Aqui temos a captura de tela do projeto:
-![screenshot]()
+![screenshot](src/assets/screencapture-devbills.png)
