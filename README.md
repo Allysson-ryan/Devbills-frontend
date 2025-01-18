@@ -3,7 +3,8 @@
 DevBills é uma aplicação completa para gerenciamento de finanças pessoais e profissionais, combinando uma interface intuitiva desenvolvida com **React** e **TypeScript** com uma poderosa API backend personalizada que criei. 
 
 <br><br/>
-🔗Deploy: https://devbills-frontend-bksl8o5gp-allysson-ryans-projects.vercel.app/
+### 🔗Deploy: https://devbills-frontend-bksl8o5gp-allysson-ryans-projects.vercel.app/
+### 🔗Api Utilizada: https://github.com/Allysson-ryan/DevBills-API/blob/main/README.md
 <br><br/>
 
 ## 📌 Funcionalidades Planejadas
