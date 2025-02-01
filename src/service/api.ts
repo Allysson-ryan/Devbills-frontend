@@ -11,7 +11,6 @@ import type {
   TransactionsFilter,
 } from './api.type';
 
-// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export class APIService {
   private static client = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
